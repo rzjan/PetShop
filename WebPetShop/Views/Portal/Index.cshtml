@@ -1,0 +1,70 @@
+﻿@model IEnumerable<WebPetShop.Models.MascotaViewModel>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Nombre)
+        </th>
+        <th>
+            @*@Html.HiddenFor(m => m.sth, new { Value = "default" })*@
+            @*@Html.Hidden("RequiredProperty", "default")
+                @Html.DisplayNameFor(model => model.Edad, new { Value = "default" })*@
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Estado)
+
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.FechaNacimiento)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.usu)
+        </th>
+        @*<th>
+                @Html.DisplayNameFor(model => model.Foto)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FechaAlta)
+            </th>*@
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Nombre)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Edad)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.FechaNacimiento)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Estado)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Foto)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.FechaAlta)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { id = item.MascotaID }) |
+                @Html.ActionLink("Details", "Details", new { id = item.MascotaID }) |
+                @Html.ActionLink("Delete", "Delete", new { id = item.MascotaID })
+            </td>
+        </tr>
+    }
+
+</table>
