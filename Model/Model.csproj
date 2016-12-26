@@ -53,6 +53,10 @@
     <Compile Include="Catalogo.cs" />
     <Compile Include="Estado.cs" />
     <Compile Include="Mascota.cs" />
+    <Compile Include="Migrations\201612261829113_Actualizar Entidad Mascotas.cs" />
+    <Compile Include="Migrations\201612261829113_Actualizar Entidad Mascotas.Designer.cs">
+      <DependentUpon>201612261829113_Actualizar Entidad Mascotas.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="PetShopContext.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -62,6 +66,11 @@
   <ItemGroup>
     <None Include="App.config" />
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Migrations\201612261829113_Actualizar Entidad Mascotas.resx">
+      <DependentUpon>201612261829113_Actualizar Entidad Mascotas.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

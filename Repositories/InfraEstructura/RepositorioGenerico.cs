@@ -31,7 +31,7 @@ namespace Repositories.InfraEstructura
             _context.SaveChanges();
         }
 
-        public TEntity GetById(int Id)
+        public TEntity GetById(int? Id)
         {
             return _context.Set<TEntity>().Find(Id);
         }
@@ -55,7 +55,8 @@ namespace Repositories.InfraEstructura
 
         public void Dispose()
         {
-            throw new NotImplementedException();
+            _context.Dispose();
+            //throw new NotImplementedException();
         }
     }
 }

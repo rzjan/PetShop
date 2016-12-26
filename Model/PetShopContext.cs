@@ -48,6 +48,8 @@ namespace Model
 
         //public System.Data.Entity.DbSet<WebPetShop.Models.MascotaViewModel> MascotaViewModels { get; set; }
 
+        //public System.Data.Entity.DbSet<WebPetShop.Models.MascotaViewModel> MascotaViewModels { get; set; }
+
 
 
     }

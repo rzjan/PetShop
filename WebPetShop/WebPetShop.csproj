@@ -202,6 +202,7 @@
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
+    <Compile Include="Controllers\MisMascotasController.cs" />
     <Compile Include="Controllers\PortalController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -334,6 +335,11 @@
     <Content Include="Views\Shared\Lockout.cshtml" />
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
+    <Content Include="Views\MisMascotas\Create.cshtml" />
+    <Content Include="Views\MisMascotas\Delete.cshtml" />
+    <Content Include="Views\MisMascotas\Details.cshtml" />
+    <Content Include="Views\MisMascotas\Edit.cshtml" />
+    <Content Include="Views\MisMascotas\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

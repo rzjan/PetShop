@@ -20,7 +20,7 @@ namespace Repositories.InfraEstructura
 
         //Metodos CRUD Genericos
         void Add(TEntity obj);
-        TEntity GetById(int Id);
+        TEntity GetById(int? Id);
         IEnumerable<TEntity> GetAll();
         void Update(TEntity obj);
         void Remove(TEntity obj);

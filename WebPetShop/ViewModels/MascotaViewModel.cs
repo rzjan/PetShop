@@ -23,5 +23,7 @@ namespace WebPetShop.Models
         public string Foto { get; set; }
         public Animal Animal { get; set; }
         public DateTime FechaAlta { get; set; }
+
+        public Usuario Usuario { get; set; }
     }
 }
