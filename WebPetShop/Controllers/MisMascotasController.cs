@@ -10,13 +10,15 @@ using Model;
 using WebPetShop.Models;
 using AutoMapper;
 using Repositories.Repositorios;
+using WebPetShop.ViewModels;
 
 namespace WebPetShop.Controllers
 {
     public class MisMascotasController : Controller
     {
         private readonly MascotaRepositorio _MascotasRepositorio = new MascotaRepositorio();
-
+        private readonly AnimalRepositorio _AnimalRepositorio = new AnimalRepositorio();
+        private readonly RazaRepositorio _RazaRepositorio = new RazaRepositorio();
         //private PetShopContext db = new PetShopContext();
 
         // GET: MisMascotas
@@ -34,8 +36,8 @@ namespace WebPetShop.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-             //var clienteDomain = Mapper.Map<ClienteViewModel, Cliente>(cliente);
-             //       _clienteRepository.Add(clienteDomain);
+            //var clienteDomain = Mapper.Map<ClienteViewModel, Cliente>(cliente);
+            //       _clienteRepository.Add(clienteDomain);
 
             var mascotaVM = Mapper.Map<Mascota, MascotaViewModel>(_MascotasRepositorio.GetById(id));
             //mascotaViewModel mascotaViewModel = db.MascotaViewModels.Find(id);
@@ -43,7 +45,7 @@ namespace WebPetShop.Controllers
             {
                 return HttpNotFound();
             }
-            
+
             return View(mascotaVM);
         }
 
@@ -51,7 +53,16 @@ namespace WebPetShop.Controllers
 
         public ActionResult Create()
         {
-            return View();
+            MascotaViewModel mascotaVM = new MascotaViewModel()
+            {
+                SelectAnimal = new SelectList(_AnimalRepositorio.GetAll(), "AnimalID", "Descripcion"),
+                SelectRaza = new SelectList(_RazaRepositorio.GetAll(), "RazaID", "DescripcionRaza")
+            };
+
+            //var AnimalList = new SelectList(Mapper.Map<IEnumerable<Animal>, IEnumerable<AnimalViewModel>>(_AnimalRepositorio.GetAll()), "AnimalID", "Descripcion");
+            // ViewBag.AnimalModel = AnimalList;
+
+            return View(mascotaVM);
         }
 
 
@@ -66,6 +77,10 @@ namespace WebPetShop.Controllers
             {
                 if (ModelState.IsValid)
                 {
+                    mascotaVM.FechaAlta = DateTime.Now;
+                    //mascotaVM.AnimalID = _AnimalRepositorio.GetById(mascotaVM.AnimalID);
+                    //mascotaVM.AnimalID = _AnimalRepositorio.GetById(mascotaVM.Animal.AnimalID);
+
                     var mascotaDomain = Mapper.Map<MascotaViewModel, Mascota>(mascotaVM);
                     _MascotasRepositorio.Add(mascotaDomain);
 
@@ -78,7 +93,7 @@ namespace WebPetShop.Controllers
             {
                 return View();
             }
-         
+
         }
 
         // POST: MisMascotas/Create
@@ -106,12 +121,68 @@ namespace WebPetShop.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
             var mascotaVM = Mapper.Map<Mascota, MascotaViewModel>(_MascotasRepositorio.GetById(id));
-           // MascotaViewModel mascotaViewModel = db.MascotaViewModels.Find(id);
-            if (mascotaVM == null)
+
+            var animalList = _AnimalRepositorio.GetAll();
+            var razaList = _RazaRepositorio.GetAll();
+            //var regionList = regionRepository.GetAll();
+
+            //var territoryList = territoryRepository.Filter(x => x.RegionID == RegionId);
+
+           
+            //EmployeeModel model = new EmployeeModel()
+            MascotaViewModel model = new MascotaViewModel()
+            {
+                SelectAnimal = new SelectList(animalList, "AnimalID", "Descripcion"),
+                AnimalID = mascotaVM.AnimalID,
+
+                SelectRaza = new SelectList(razaList, "AnimalID", "Descripcion"),
+                RazaID = mascotaVM.RazaID,
+               // TerritoryList = new SelectList(territoryList, "TerritoryID", "Description")
+            };
+
+            if (model == null)
             {
                 return HttpNotFound();
             }
-            return View(mascotaVM);
+
+            //return View(mascotaVM);
+
+            return View(model);
+
+
+
+            //ViewBag.SelectAnimalID = _AnimalRepositorio.GetAll().Select(a => new SelectListItem
+            //{
+            //    Value = a.AnimalID.ToString(),
+            //    Text = a.Descripcion,
+            //});
+
+            //ViewBag.SelectRazaId = _RazaRepositorio.GetAll().Select(r => new SelectListItem
+            //{
+            //    Value = r.RazaID.ToString(),
+            //    Text = r.DescripcionRaza,
+            //});
+            //MascotaViewModel mVM = new MascotaViewModel()
+            //{
+            //    SelectAnimal =  SelectAnimals;
+                //SelectAnimal =( _AnimalRepositorio.GetAll().Select(a => new SelectListItem{
+                //        Value = a.AnimalID.ToString(),
+                //        Text = a.Descripcion,
+                //})).ToList()
+
+                //SelectAnimal = _AnimalRepositorio.GetById(SelectAnimal)
+                //SelectAnimal = new SelectList(_AnimalRepositorio.GetAll(), "AnimalID", "Descripcion"),
+                //SelectRaza = new SelectList(_RazaRepositorio.GetAll(), "RazaID", "DescripcionRaza")
+            //};
+
+            //aqui recuperas la entidad de la db
+            //y asignas el valor asignado al modelo
+
+               
+
+
+
+            
         }
 
         // POST: MisMascotas/Edit/5
@@ -125,7 +196,7 @@ namespace WebPetShop.Controllers
             {
                 var mascotaDomain = Mapper.Map<MascotaViewModel, Mascota>(mascotaVM);
                 _MascotasRepositorio.Update(mascotaDomain);
-               
+
                 //db.Entry(mascotaViewModel).State = EntityState.Modified;
                 //db.SaveChanges();
                 return RedirectToAction("Index");

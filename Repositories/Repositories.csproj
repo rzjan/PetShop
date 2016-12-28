@@ -49,11 +49,15 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="InfraEstructura\Interfaces\IAnimalRepositorio.cs" />
     <Compile Include="InfraEstructura\Interfaces\IMascotaRepositorio.cs" />
+    <Compile Include="InfraEstructura\Interfaces\IRazaRepositorio.cs" />
     <Compile Include="InfraEstructura\IRepositorioGenerico.cs" />
     <Compile Include="InfraEstructura\RepositorioGenerico.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Repositorios\AnimalRepositorio.cs" />
     <Compile Include="Repositorios\MascotaRepositorio.cs" />
+    <Compile Include="Repositorios\RazaRepositorio.cs" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

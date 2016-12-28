@@ -12,7 +12,7 @@ namespace Repositories.InfraEstructura
     public class RepositorioGenerico<TEntity> : IDisposable, IRepositorioGenerico<TEntity> where TEntity : class
     {
         private PetShopContext _context = new PetShopContext();
-        //protected HotelDDDContext db = new HotelDDDContext();
+       
 
         //private IDbSet<TEntity> _dbSet = null;
         public void Add(TEntity obj)
@@ -26,9 +26,7 @@ namespace Repositories.InfraEstructura
             {
                 
                 throw;
-            }
-            _context.Set<TEntity>().Add(obj);
-            _context.SaveChanges();
+            }           
         }
 
         public TEntity GetById(int? Id)
@@ -56,7 +54,7 @@ namespace Repositories.InfraEstructura
         public void Dispose()
         {
             _context.Dispose();
-            //throw new NotImplementedException();
+            
         }
     }
 }

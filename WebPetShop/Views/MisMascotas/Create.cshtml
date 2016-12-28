@@ -2,18 +2,22 @@
 
 @{
     ViewBag.Title = "Create";
+
+    //SelectList lst = (ViewBag.AnimalModel, "", "");
+
 }
 
 <h2>Create</h2>
 
-@using (Html.BeginForm()) 
+@using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
-    
+
     <div class="form-horizontal">
         <h4>MascotaViewModel</h4>
         <hr />
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
         <div class="form-group">
             @Html.LabelFor(model => model.Nombre, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
@@ -28,7 +32,7 @@
                 @Html.EditorFor(model => model.Edad, new { htmlAttributes = new { @class = "form-control" } })
                 @Html.ValidationMessageFor(model => model.Edad, "", new { @class = "text-danger" })
             </div>
-        </div>
+        </div>              
 
         <div class="form-group">
             @Html.LabelFor(model => model.FechaNacimiento, htmlAttributes: new { @class = "control-label col-md-2" })
@@ -41,8 +45,13 @@
         <div class="form-group">
             @Html.LabelFor(model => model.Estado, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.Estado, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Estado, "", new { @class = "text-danger" })
+                @*@Html.EditorFor(model => model.Estado, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.Estado, "", new { @class = "text-danger" })*@
+
+                @Html.DropDownList("Estado",
+                    new SelectList(Enum.GetValues(typeof(Model.Estado))),
+                    "Select Estado",
+                    new { @class = "form-control" })
             </div>
         </div>
 
@@ -55,17 +64,24 @@
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.FechaAlta, htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.LabelFor(model => model.AnimalID, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.FechaAlta, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.FechaAlta, "", new { @class = "text-danger" })
+                @Html.DropDownListFor(model => model.AnimalID, Model.SelectAnimal, "--Seleccione Tipo Animal--", new { @class = "form-control" })
+                @Html.HiddenFor(Model => Model.AnimalID)
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.RazaID, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownListFor(model => model.RazaID, Model.SelectRaza, "--Seleccione Tipo Animal--", new { @class = "form-control" })
+                @Html.HiddenFor(Model => Model.RazaID)
             </div>
         </div>
 
-        <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Create" class="btn btn-default" />
-            </div>
+    </div>
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            <input type="submit" value="Create" class="btn btn-default" />
         </div>
     </div>
 }

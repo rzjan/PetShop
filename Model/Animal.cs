@@ -10,7 +10,7 @@ namespace Model
     {
         //PROPIEDADES
         public int AnimalID { get; set; }
-        public string Descripccion { get; set; }
+        public string Descripcion { get; set; }
 
         public string FotoDefault { get; set; }
 

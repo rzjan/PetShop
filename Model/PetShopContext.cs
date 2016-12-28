@@ -19,7 +19,7 @@ namespace Model
         public DbSet<Usuario> Usuarios { get; set; }
         public DbSet<Raza> Razas { get; set; }
 
-        public DbSet<Estado> Estado { get; set; }
+        //public DbSet<Estado> Estado { get; set; }
 
         public PetShopContext()
             : base("PetShopContext")

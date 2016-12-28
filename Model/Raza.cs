@@ -11,7 +11,7 @@ namespace Model
         public int RazaID { get; set; }
         public string DescripcionRaza { get; set; }
 
-        public virtual ICollection<Animal> Mascotas { get; set; }
+        public virtual ICollection<Mascota> Mascotas { get; set; }
 
     }
 }
