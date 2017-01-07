@@ -7,26 +7,43 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using Model;
-using WebPetShop.Models;
+using WebPetShop.ViewModels;
 using AutoMapper;
 using Repositories.Repositorios;
-using WebPetShop.ViewModels;
+using WebPetShop.Helper;
+using System.IO;
+using System.Globalization;
 
 namespace WebPetShop.Controllers
 {
+    [Authorize]
     public class MisMascotasController : Controller
     {
         private readonly MascotaRepositorio _MascotasRepositorio = new MascotaRepositorio();
         private readonly AnimalRepositorio _AnimalRepositorio = new AnimalRepositorio();
         private readonly RazaRepositorio _RazaRepositorio = new RazaRepositorio();
+        private readonly UsuarioRepositorio _UsuarioRepositorio = new UsuarioRepositorio();
+        private readonly EstadoRepositorio _EstadoRepositorio = new EstadoRepositorio();
+        
+
         //private PetShopContext db = new PetShopContext();
 
         // GET: MisMascotas
+      
         public ActionResult Index()
-        {
-            var mascotaVM = Mapper.Map<IEnumerable<Mascota>, IEnumerable<MascotaViewModel>>(_MascotasRepositorio.GetAll());
-            return View(mascotaVM);
-            //return View(db.MascotaViewModels.ToList());
+        {            
+            string emailUser = User.Identity.Name;
+            int _usuarioID = _UsuarioRepositorio.GetIDUserByEmail(emailUser);
+           
+            var lstEstado = Mapper.Map<IEnumerable<Estado>, IEnumerable<EstadoViewModel>>(_EstadoRepositorio.GetAll());
+            var lstRaza = Mapper.Map<IEnumerable<Raza>, IEnumerable<RazaViewModel>>(_RazaRepositorio.GetAll());       
+          
+            var mascotaVM = Mapper.Map<IEnumerable<Mascota>, IEnumerable<MascotaViewModel>>(_MascotasRepositorio.GetAllByUser(_usuarioID));  
+          
+            ViewBag.RazaList = lstRaza;
+            ViewBag.EstadoList = lstEstado;                       
+           
+            return View(mascotaVM);          
         }
 
         // GET: MisMascotas/Details/5
@@ -36,34 +53,29 @@ namespace WebPetShop.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            //var clienteDomain = Mapper.Map<ClienteViewModel, Cliente>(cliente);
-            //       _clienteRepository.Add(clienteDomain);
-
+            var lstEstado = Mapper.Map<IEnumerable<Estado>, IEnumerable<EstadoViewModel>>(_EstadoRepositorio.GetAll());
+            ViewBag.EstadoList = lstEstado;
             var mascotaVM = Mapper.Map<Mascota, MascotaViewModel>(_MascotasRepositorio.GetById(id));
-            //mascotaViewModel mascotaViewModel = db.MascotaViewModels.Find(id);
+
             if (mascotaVM == null)
             {
                 return HttpNotFound();
             }
-
             return View(mascotaVM);
         }
 
         // GET: MisMascotas/Create
-
         public ActionResult Create()
         {
             MascotaViewModel mascotaVM = new MascotaViewModel()
             {
                 SelectAnimal = new SelectList(_AnimalRepositorio.GetAll(), "AnimalID", "Descripcion"),
-                SelectRaza = new SelectList(_RazaRepositorio.GetAll(), "RazaID", "DescripcionRaza")
+                SelectRaza = new SelectList(_RazaRepositorio.GetAll(), "RazaID", "DescripcionRaza"),
+                SelectEstado = new SelectList(_EstadoRepositorio.GetAll(), "EstadoID", "EstadoDescripcion")
+
             };
-
-            //var AnimalList = new SelectList(Mapper.Map<IEnumerable<Animal>, IEnumerable<AnimalViewModel>>(_AnimalRepositorio.GetAll()), "AnimalID", "Descripcion");
-            // ViewBag.AnimalModel = AnimalList;
-
             return View(mascotaVM);
-        }
+        }            
 
 
         // POST: MisMascotas/Create
@@ -77,16 +89,44 @@ namespace WebPetShop.Controllers
             {
                 if (ModelState.IsValid)
                 {
+                    //Upload Image
+                    string pic = string.Empty;
+                    string path = string.Empty;
+
+                    if (mascotaVM.imagen != null)
+                    {
+                        pic = Path.GetFileName(mascotaVM.imagen.FileName);
+                        path = Path.Combine(Server.MapPath("~/Content/Images/Mascotas/MiMascota/"), pic);
+
+                        mascotaVM.imagen.SaveAs(path);
+                        using (MemoryStream ms = new MemoryStream())
+                        {
+                            mascotaVM.imagen.InputStream.CopyTo(ms);
+                            byte[] arrary = ms.GetBuffer();                          
+                        }
+                    }
+                    var _estado = _EstadoRepositorio.GetAll();
+
+                    foreach (var item in _estado)
+                    {
+                        if (item.EstadoID == mascotaVM.EstadoID) {
+                            mascotaVM.nEstado = item.EstadoDescripcion;
+                        }
+                        
+                    }
+                    mascotaVM.Foto = pic == string.Empty ? string.Empty : string.Format("~/Content/Images/Mascotas/MiMascota/{0}", pic);
                     mascotaVM.FechaAlta = DateTime.Now;
-                    //mascotaVM.AnimalID = _AnimalRepositorio.GetById(mascotaVM.AnimalID);
-                    //mascotaVM.AnimalID = _AnimalRepositorio.GetById(mascotaVM.Animal.AnimalID);
+                    //Obtengo el usuario identity logueado                   
+                    var emailUser = User.Identity.Name.ToString();
+                    mascotaVM.UsuarioID = _UsuarioRepositorio.GetIDUserByEmail(emailUser);                 
 
                     var mascotaDomain = Mapper.Map<MascotaViewModel, Mascota>(mascotaVM);
-                    _MascotasRepositorio.Add(mascotaDomain);
 
+                    _MascotasRepositorio.Add(mascotaDomain);
                     return RedirectToAction("Index");
+                   
                 }
-                // TODO: Add insert logic here
+             
                 return View(mascotaVM);
             }
             catch
@@ -94,24 +134,7 @@ namespace WebPetShop.Controllers
                 return View();
             }
 
-        }
-
-        // POST: MisMascotas/Create
-        // Para protegerse de ataques de publicación excesiva, habilite las propiedades específicas a las que desea enlazarse. Para obtener 
-        // más información vea http://go.microsoft.com/fwlink/?LinkId=317598.
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public ActionResult Create([Bind(Include = "MascotaID,Nombre,Edad,FechaNacimiento,Estado,Foto,FechaAlta")] MascotaViewModel mascotaViewModel)
-        //{
-        //    if (ModelState.IsValid)
-        //    {
-        //        db.MascotaViewModels.Add(mascotaViewModel);
-        //        db.SaveChanges();
-        //        return RedirectToAction("Index");
-        //    }
-
-        //    return View(mascotaViewModel);
-        //}
+        }        
 
         // GET: MisMascotas/Edit/5
         public ActionResult Edit(int? id)
@@ -120,69 +143,41 @@ namespace WebPetShop.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
+            var lstEstado = Mapper.Map<IEnumerable<Estado>, IEnumerable<EstadoViewModel>>(_EstadoRepositorio.GetAll());
+            ViewBag.EstadoList = lstEstado;
+
             var mascotaVM = Mapper.Map<Mascota, MascotaViewModel>(_MascotasRepositorio.GetById(id));
 
-            var animalList = _AnimalRepositorio.GetAll();
-            var razaList = _RazaRepositorio.GetAll();
-            //var regionList = regionRepository.GetAll();
-
-            //var territoryList = territoryRepository.Filter(x => x.RegionID == RegionId);
-
-           
-            //EmployeeModel model = new EmployeeModel()
-            MascotaViewModel model = new MascotaViewModel()
-            {
-                SelectAnimal = new SelectList(animalList, "AnimalID", "Descripcion"),
-                AnimalID = mascotaVM.AnimalID,
-
-                SelectRaza = new SelectList(razaList, "AnimalID", "Descripcion"),
-                RazaID = mascotaVM.RazaID,
-               // TerritoryList = new SelectList(territoryList, "TerritoryID", "Description")
-            };
-
-            if (model == null)
+            if (mascotaVM == null)
             {
                 return HttpNotFound();
             }
+            //ConversorHelper _conversorHelper = new ConversorHelper();
 
-            //return View(mascotaVM);
+            var animalList = _AnimalRepositorio.GetAll();
+            var razaList = _RazaRepositorio.GetAll();
+            var estadoList = _EstadoRepositorio.GetAll();
 
-            return View(model);
-
-
-
-            //ViewBag.SelectAnimalID = _AnimalRepositorio.GetAll().Select(a => new SelectListItem
-            //{
-            //    Value = a.AnimalID.ToString(),
-            //    Text = a.Descripcion,
-            //});
-
-            //ViewBag.SelectRazaId = _RazaRepositorio.GetAll().Select(r => new SelectListItem
-            //{
-            //    Value = r.RazaID.ToString(),
-            //    Text = r.DescripcionRaza,
-            //});
-            //MascotaViewModel mVM = new MascotaViewModel()
-            //{
-            //    SelectAnimal =  SelectAnimals;
-                //SelectAnimal =( _AnimalRepositorio.GetAll().Select(a => new SelectListItem{
-                //        Value = a.AnimalID.ToString(),
-                //        Text = a.Descripcion,
-                //})).ToList()
-
-                //SelectAnimal = _AnimalRepositorio.GetById(SelectAnimal)
-                //SelectAnimal = new SelectList(_AnimalRepositorio.GetAll(), "AnimalID", "Descripcion"),
-                //SelectRaza = new SelectList(_RazaRepositorio.GetAll(), "RazaID", "DescripcionRaza")
-            //};
-
-            //aqui recuperas la entidad de la db
-            //y asignas el valor asignado al modelo
-
-               
-
-
+            var animalSelect = _AnimalRepositorio.Filter(x => x.AnimalID == mascotaVM.AnimalID);
 
             
+            mascotaVM.SelectAnimal = new SelectList(animalList, "AnimalID", "Descripcion", mascotaVM.AnimalID);
+            mascotaVM.SelectRaza = new SelectList(razaList, "RazaID", "DescripcionRaza", mascotaVM.RazaID);
+            mascotaVM.SelectEstado = new SelectList(estadoList, "EstadoID", "EstadoDescripcion", mascotaVM.EstadoID);
+
+            ViewBag.ListaEstado = estadoList;
+
+            //DateTime dt = DateTime.ParseExact(mascotaVM.FechaNacimiento.ToString(), "MM/dd/yyyy hh:mm:ss tt", CultureInfo.InvariantCulture);
+            //string s = dt.ToString("dd/M/yyyy", CultureInfo.InvariantCulture);
+            //mascotaVM.FecNac = _conversorHelper.convertStringToDateTime(mascotaVM.FechaNacimiento);
+
+
+
+
+            //mascotaVM.FechaAlta = mascotaVM.FechaAlta
+            //mascotaVM.Foto = string.Empty;
+            return View(mascotaVM);
+
         }
 
         // POST: MisMascotas/Edit/5
@@ -192,44 +187,34 @@ namespace WebPetShop.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Edit(MascotaViewModel mascotaVM)
         {
+           
             if (ModelState.IsValid)
-            {
-                var mascotaDomain = Mapper.Map<MascotaViewModel, Mascota>(mascotaVM);
-                _MascotasRepositorio.Update(mascotaDomain);
+            {                               
+                string pic = string.Empty;
+                string path = string.Empty;
 
-                //db.Entry(mascotaViewModel).State = EntityState.Modified;
-                //db.SaveChanges();
-                return RedirectToAction("Index");
+                if (mascotaVM.imagen != null)
+                {
+                    pic = Path.GetFileName(mascotaVM.imagen.FileName);
+                    path = Path.Combine(Server.MapPath("~/Content/Images/Mascotas/MiMascota/"), pic);
+
+                    mascotaVM.imagen.SaveAs(path);
+                    using (MemoryStream ms = new MemoryStream())
+                    {
+                        mascotaVM.imagen.InputStream.CopyTo(ms);
+                        byte[] arrary = ms.GetBuffer();                       
+                    }
+                    mascotaVM.Foto = pic == string.Empty ? string.Empty : string.Format("~/Content/Images/Mascotas/MiMascota/{0}", pic);                   
+                }      
+                    var emailUser = User.Identity.Name.ToString();
+                    mascotaVM.UsuarioID = _UsuarioRepositorio.GetIDUserByEmail(emailUser);   
+                    var mascotaDomain = Mapper.Map<MascotaViewModel, Mascota>(mascotaVM);
+                    _MascotasRepositorio.Update(mascotaDomain);
+             
+                    return RedirectToAction("Index");
             }
-
             return View(mascotaVM);
-        }
-
-        // GET: MisMascotas/Delete/5
-        //public ActionResult Delete(int? id)
-        //{
-        //    if (id == null)
-        //    {
-        //        return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-        //    }
-        //    MascotaViewModel mascotaViewModel = db.MascotaViewModels.Find(id);
-        //    if (mascotaViewModel == null)
-        //    {
-        //        return HttpNotFound();
-        //    }
-        //    return View(mascotaViewModel);
-        //}
-
-        // POST: MisMascotas/Delete/5
-        //[HttpPost, ActionName("Delete")]
-        //[ValidateAntiForgeryToken]
-        //public ActionResult DeleteConfirmed(int id)
-        //{
-        //    MascotaViewModel mascotaViewModel = db.MascotaViewModels.Find(id);
-        //    //db.MascotaViewModels.Remove(mascotaViewModel);
-        //    //db.SaveChanges();
-        //    return RedirectToAction("Index");
-        //}
+        }        
 
         protected override void Dispose(bool disposing)
         {

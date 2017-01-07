@@ -6,25 +6,30 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+
+//Update-Database -Verbose -Force -AppDomainBaseDirectory "C:\Path\To\bin"
+
 namespace Model
 {
     public class PetShopContext : DbContext
     {
+            
+
 
         //TABLAS
         public DbSet<Mascota> Mascotas { get; set; }
 
-        public DbSet<Animal> TiposAnimales { get; set; }
+        public DbSet<Animal> Animales { get; set; }
 
         public DbSet<Usuario> Usuarios { get; set; }
         public DbSet<Raza> Razas { get; set; }
 
-        //public DbSet<Estado> Estado { get; set; }
+        public DbSet<Estado> Estado { get; set; }
 
         public PetShopContext()
             : base("PetShopContext")
         {
-
+            AppDomain.CurrentDomain.SetData("DataDirectory", System.IO.Directory.GetCurrentDirectory());
         }
 
 
@@ -33,9 +38,9 @@ namespace Model
             // Eliminar convención de pluralización de nombres de tablas
             modelBuilder.Conventions.Remove<PluralizingTableNameConvention>();
 
-            //modelBuilder.Entity<>().ToTable("");
-            //modelBuilder.Entity<>()
-            //            .Property(p => p.)
+            //modelBuilder.Entity<Mascota>().ToTable("Mascotas");
+            //modelBuilder.Entity<Mascota>()
+            //            .Property(p => p.FechaNacimiento)
             //            .HasDatabaseGeneratedOption(DatabaseGeneratedOption.None);
             //modelBuilder.Entity<>()
             //            .Property(p => p.)

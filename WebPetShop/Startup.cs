@@ -2,7 +2,7 @@
 using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.Owin;
 using Owin;
-using WebPetShop.Models;
+using WebPetShop.ViewModels;
 
 [assembly: OwinStartupAttribute(typeof(WebPetShop.Startup))]
 namespace WebPetShop
@@ -37,9 +37,9 @@ namespace WebPetShop
                 //Here we create a Admin super user who will maintain the website                  
 
                 var user = new ApplicationUser();
-                user.UserName = "admin";
+                user.UserName = "admin@gmail.com";
                 user.Email = "admin@gmail.com";
-
+                
                 string userPWD = "Admin@123";
 
                 var chkUser = UserManager.Create(user, userPWD);

@@ -34,6 +34,22 @@ namespace Repositories.InfraEstructura
             return _context.Set<TEntity>().Find(Id);
         }
 
+        //public TEntity Single(Expression<Func<TEntity, bool>> predicate)
+        //{
+        //    using (_context)
+        //    {
+        //        return _context.Set<TEntity>().FirstOrDefault(predicate);
+        //    }
+        //}
+
+        public List<TEntity> Filter(Expression<Func<TEntity, bool>> predicate)
+        {
+            using (_context)
+            {
+                return (List<TEntity>)_context.Set<TEntity>().Where(predicate).ToList();
+            }
+        }
+
         public IEnumerable<TEntity> GetAll()
         {
             return _context.Set<TEntity>().ToList();
@@ -42,6 +58,7 @@ namespace Repositories.InfraEstructura
         public void Update(TEntity obj)
         {
             _context.Entry(obj).State = EntityState.Modified;
+            //_context.Configuration.ValidateOnSaveEnabled = false;
             _context.SaveChanges();
         }
 
@@ -56,5 +73,6 @@ namespace Repositories.InfraEstructura
             _context.Dispose();
             
         }
+
     }
 }

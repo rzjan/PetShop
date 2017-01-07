@@ -1,6 +1,6 @@
 ﻿
 html {
-  background-image: url("/Content/Images/fondoPagina.jpg");
+    /*background-image: url("/Content/Images/fondoPagina1.jpg");*/    
 }
  
 
@@ -8,9 +8,9 @@ body {
     padding-top: 50px;
     padding-bottom: 20px;
     /*background-image: url("imagenes/segunda_imagen.png");*/
-    background-image: url("/Content/Images/fondoRepeat.jpg");
-   
-    
+    /*background-image: url("/Content/Images/backround1.jpg");*/
+    background-color:#d9b491;      
+     
 
 }
 

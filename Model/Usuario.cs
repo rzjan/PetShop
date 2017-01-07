@@ -15,6 +15,8 @@ namespace Model
         public string Direccion  { get; set; }
         public string Telefono { get; set; }
 
+        public string Email { get; set; }
+
 
         public virtual ICollection<Mascota> Mascotas{ get; set; }
 

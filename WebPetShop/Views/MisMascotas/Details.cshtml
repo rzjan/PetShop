@@ -1,13 +1,13 @@
-﻿@model WebPetShop.Models.MascotaViewModel
+﻿@model WebPetShop.ViewModels.MascotaViewModel
 
 @{
     ViewBag.Title = "Details";
+    List<WebPetShop.ViewModels.EstadoViewModel> lstEstado = ViewBag.EstadoList;
 }
 
-<h2>Details</h2>
+<h2>Información de mi mascota</h2>
 
 <div>
-    <h4>MascotaViewModel</h4>
     <hr />
     <dl class="dl-horizontal">
         <dt>
@@ -35,19 +35,26 @@
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.Estado)
+           
+            @Html.DisplayNameFor(model => model.EstadoID)
         </dt>
 
-        <dd>
-            @Html.DisplayFor(model => model.Estado)
+        <dd>          
+            @foreach (var i in lstEstado)
+            {
+                if (i.EstadoID == Model.EstadoID)
+                {
+                    @Html.DisplayFor(model => i.EstadoDescripcion)
+                }
+            }
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.Foto)
+            @Html.DisplayNameFor(model => model.imagen)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.Foto)
+            <img src="@Url.Content(@Model.Foto)" alt="Image" height="20%" width="20%" />          
         </dd>
 
         <dt>
@@ -61,6 +68,6 @@
     </dl>
 </div>
 <p>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.MascotaID }) |
-    @Html.ActionLink("Back to List", "Index")
+    @Html.ActionLink("Editar", "Edit", new { id = Model.MascotaID },new{@class= "btn btn-primary"}) 
+    @Html.ActionLink("Volver", "Index",null,  new { @class = "btn btn-warning" })
 </p>

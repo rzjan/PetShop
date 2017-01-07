@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
-namespace WebPetShop.Models
+namespace WebPetShop.ViewModels
 {
     public class ExternalLoginConfirmationViewModel
     {
@@ -79,6 +79,11 @@ namespace WebPetShop.Models
         [Display(Name = "Confirmar contraseña")]
         [Compare("Password", ErrorMessage = "La contraseña y la contraseña de confirmación no coinciden.")]
         public string ConfirmPassword { get; set; }
+
+        
+        [Required(ErrorMessage="Debe ingresar su Nombre y Apellido")]
+        [Display(Name="Nombre y Apellido")]
+        public string nUsuario { get; set; }
     }
 
     public class ResetPasswordViewModel

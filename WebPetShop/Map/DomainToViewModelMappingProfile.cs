@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using Model;
 using System;
-using WebPetShop.Models;
+using WebPetShop.ViewModels;
 
 
 namespace WebPetShop.Map
@@ -18,7 +18,30 @@ namespace WebPetShop.Map
         protected override void Configure()
         {
             CreateMap<MascotaViewModel, Mascota>();
+            CreateMap<UsuarioViewModel, Usuario>();
+            CreateMap<EstadoViewModel, Estado>();
+            CreateMap<RazaViewModel, Raza>();
+            CreateMap<AnimalViewModel, Animal>();
+
             //CreateMap<TipoClienteViewModel, TipoCliente>();
-        }       
+        }
+
+        //public DomainToViewModelMappingProfile()
+        //{
+        //    ConfigureMappings();
+        //}
+
+
+        /// <summary>
+        /// Creates a mapping between source (Domain) and destination (ViewModel)
+        /// </summary>
+        //private void ConfigureMappings()
+        //{
+        //    CreateMap<ProductDefinition, ProductDefinitionViewModel>().ReverseMap();
+        //    CreateMap<CatalogueDefinitionFile, CatalogueDefinitionFileViewModel>().ReverseMap();
+        //}
     }
 }
+
+
+

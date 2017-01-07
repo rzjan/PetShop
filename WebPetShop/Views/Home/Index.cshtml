@@ -1,56 +1,49 @@
-﻿
-﻿@Model
+﻿@model WebPetShop.ViewModels.MascotaViewModel
+@using WebPetShop.ViewModels
 @{
     ViewBag.Title = "Home";
+    List<MascotaViewModel> mascotaList = ViewBag.MascotaList;
+    List<EstadoViewModel> lstEstado = ViewBag.EstadoList;
 }
 
 <link href='https://fonts.googleapis.com/css?family=Ubuntu+Mono' rel='stylesheet' type='text/css'>
+<link href="~/Content/PrincipalStiles.css" rel="stylesheet" />
 
-<style type="text/css">
-    .monospaced {
-        font-family: 'Ubuntu Mono', de paso fijo;
-    }
-
-    .lstMascotas {
-        display: flex;
-        flex-wrap: wrap;
-    }
-
-    .product-card {
-        padding: 2%;
-        flex-grow: 1;
-        flex-basis: 16%;
-        display: flex; /* so child elements can use flexbox stuff too! */
-    }
-</style>
-<style>
-    .carousel-inner > .item > img,
-    .carousel-inner > .item > a > img {
-        width: 60%;
-        margin: auto;
-    }
-</style>
-
+<br />
 <div id="myCarousel" class="carousel slide" data-ride="carousel">
     <!-- Indicators -->
     <ol class="carousel-indicators">
         <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
         <li data-target="#myCarousel" data-slide-to="1"></li>
         <li data-target="#myCarousel" data-slide-to="2"></li>
+        <li data-target="#myCarousel" data-slide-to="3"></li>
+        <li data-target="#myCarousel" data-slide-to="4"></li>
+        <li data-target="#myCarousel" data-slide-to="5"></li>
+        <li data-target="#myCarousel" data-slide-to="6"></li>
     </ol>
 
     <!-- Wrapper for slides -->
     <div class="carousel-inner" role="listbox">
         <div class="item active">
-            <img src="~/Content/Images/slide-1.jpg" alt="Chania">
+            <img src="~/Content/images/Slide/Slide1.jpg" alt="Chania">
         </div>
-
         <div class="item">
-            <img src="~/Content/Images/slide-2.jpg" alt="Chania">
+            <img src="~/Content/Images/slide/Slide2.jpg" alt="Chania">
         </div>
-
         <div class="item">
-            <img src="~/Content/Images/slide-3.jpg" alt="Flower">
+            <img src="~/Content/Images/slide/Slide3.jpg" alt="Flower">
+        </div>
+        <div class="item">
+            <img src="~/Content/Images/slide/Slide4.jpg" alt="Flower">
+        </div>
+        <div class="item">
+            <img src="~/Content/Images/slide/Slide5.jpg" alt="Flower">
+        </div>
+        <div class="item">
+            <img src="~/Content/Images/slide/Slide6.jpg" alt="Flower">
+        </div>
+        <div class="item">
+            <img src="~/Content/Images/slide/Slide7.jpg" alt="Flower">
         </div>
     </div>
 
@@ -67,224 +60,147 @@
 
 <div class="row">
     <div class="jumbotron">
-        <h3>MASCOTAS DISPONIBLES PARA SU ADOPCION</h3>
+        @*<h3>MASCOTAS DISPONIBLES PARA SU ADOPCIÓN</h3>*@
+        <strong><h3 class="text-center">Últimas Mascotas Registradas</h3></strong>
     </div>
-    <div>
-        Filtrar por:
-    </div>
-
 </div>
 
 <section class="lstMascotas">
 
-    <div class="product-card">
-        <div class="product-image">
-            <img src="~/Content/Images/Mascotas/MiMascota/mascota2.jpg">
-        </div>
-        <div class="product-info">
-            <h5>Winter Jacket</h5>
-            <h6>$99.99</h6>
-        </div>
-    </div>
+    @foreach (var item in mascotaList)
+    {
 
-    <!-- more products -->
-    <div class="product-card">
-        <div class="product-image">
-            <img src="~/Content/Images/Mascotas/MiMascota/mascota2.jpg">
-        </div>
-        <div class="product-info">
-            <h5>Winter Jacket</h5>
-            <h6>$99.99</h6>
-        </div>
-    </div>
-    <div class="product-card">
-        <div class="product-image">
-            <img src="~/Content/Images/Mascotas/MiMascota/mascota2.jpg">
-        </div>
-        <div class="product-info">
-            <h5>Winter Jacket</h5>
-            <h6>$99.99</h6>
-        </div>
-    </div>
-    <div class="product-card">
-        <div class="product-image">
-            <img src="~/Content/Images/Mascotas/MiMascota/mascota2.jpg">
-        </div>
-        <div class="product-info">
-            <h5>Winter Jacket</h5>
-            <h6>$99.99</h6>
-        </div>
-    </div>
-    <div class="product-card">
-        <div class="product-image">
-            <img src="~/Content/Images/Mascotas/MiMascota/mascota2.jpg">
-        </div>
-        <div class="product-info">
-            <h5>Winter Jacket</h5>
-            <h6>$99.99</h6>
-        </div>
-    </div>
-    <div class="product-card">
-        <div class="product-image">
-            <img src="~/Content/Images/Mascotas/MiMascota/mascota2.jpg">
-        </div>
-        <div class="product-info">
-            <h5>Winter Jacket</h5>
-            <h6>$99.99</h6>
-        </div>
-    </div>
+        @*<div class="panel panel-default">
+            <div class="panel-heading">Título del panel con estilo normal</div>
+            <div class="panel-body">
+                Contenido del panel
+            </div>
+        </div>*@
 
+        <div class="panel panel-primary">
+            <div class="panel-heading"><strong><h4>@item.Nombre</h4></strong></div>
+            
+            <div class="panel panel-body">
+                <dl class="dl-horizontal panel-heading ">
+
+                    <dt>
+                        <strong>Edad:</strong>
+
+                    </dt>
+
+                    <dd>
+                        <p>@item.Edad</p>
+                    </dd>
+
+                    <dt>
+                        <strong>Fecha Nac:</strong>
+                    </dt>
+
+                    <dd>
+                        <p>@item.FechaNacimiento</p>
+                    </dd>
+
+                    <dt>
+                        <strong>Estado:</strong>
+                    </dt>
+
+                    <dd>
+                        @foreach (var i in lstEstado)
+                {
+                    if (i.EstadoID == item.EstadoID)
+                    {
+                                <p>@i.EstadoDescripcion</p>
+                            }
+                        }
+                    </dd>
+
+                    <dt>
+                        <strong>Foto:</strong>
+                    </dt>
+
+                    <dd>
+                        <img src="@Url.Content(item.Foto)" alt="Image" height="120em" width="120em" />
+                    </dd>
+
+                    <dt>
+                        <strong>Fecha Registro:</strong>
+                    </dt>
+
+                    <dd>
+                        <p>@item.FechaAlta</p>
+                    </dd>
+
+                </dl>
+                <hr />
+                @*@Html.ActionLink("Mas Info", "Index", null, new { @class = "btn btn-default" })*@
+            </div>
+          
+        </div>
+        <hr />
+    }
+    @*<table class="table table-striped">
+            <tr class="success">
+                <th class="active">
+                    @Html.DisplayNameFor(model => model.Nombre)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.FechaNacimiento)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.EstadoID)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.imagen)
+                </th>
+
+                <th>
+                    @Html.DisplayNameFor(model => model.RazaID)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.FechaAlta)
+                </th>
+                <th></th>
+            </tr>
+
+            @foreach (var item in mascotaList)
+            {
+                <tr>
+                    <td>
+                        <strong>
+                            @Html.DisplayFor(modelItem => item.Nombre)
+                        </strong>
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.FechaNacimiento)
+                    </td>
+                    <td>
+
+                        @foreach (var i in lstEstado)
+        {
+        if (i.EstadoID == item.EstadoID)
+        {
+        @Html.DisplayFor(modelItem => i.EstadoDescripcion)
+        }
+
+
+        </td>
+        <td>
+            <img src="@Url.Content(@item.Foto)" alt="Image" height="100em" width="150em" />
+
+        </td>
+        <td>
+            @foreach (var _raza in lstRaza)
+                {
+                    if (_raza.RazaID == item.RazaID)
+                    {
+                            @Html.DisplayFor(modelItem => _raza.DescripcionRaza)
+                        }
+                    }   </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.FechaAlta)
+        </td>
+
+        </tr>
+        }
+        </table>*@
 </section>
-
-
-<div class="container" id="product-section">
-    <div class="row">
-        <div class="col-md-6">
-            <div class="col-md-4">
-
-                <img src="~/Content/Images/Mascotas/MiMascota/mascota2.jpg"
-                     alt="Kodak Brownie Flash B Camera"
-                     class="img-responsive" />
-            </div>
-            <div class="col-md-2">
-                @*…[this is the product information]*@
-                <div class="row">
-                    <div class="col-md-12 bottom-rule">
-                        <h2 class="product-price">
-                            $129.00
-                        </h2>
-                        <span class="label label-primary">Vintage</span>
-                        <span class="monospaced">No. 1960140180</span>
-
-                        <div class="row add-to-cart">
-                            <div class="col-md-5 product-qty">
-                                <span class="btn btn-default btn-lg btn-qty">
-                                    <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
-                                </span>
-                                <input class="btn btn-default btn-lg btn-qty" value="1" />
-                                <span class="btn btn-default btn-lg btn-qty">
-                                    <span class="glyphicon glyphicon-minus" aria-hidden="true"></span>
-                                </span>
-                            </div>
-                            <div class="col-md-4">
-                                <button class="btn btn-lg btn-brand btn-full-width">
-                                    Add to Cart
-                                </button>
-                            </div>
-                        </div><!-- end row -->
-
-                        <div class="row">
-                            <div class="col-md-4 text-center">
-                                <span class="monospaced">In Stock</span>
-                            </div>
-                            <div class="col-md-4 col-md-offset-1 text-center">
-                                <a class="monospaced" href="#">Add to Shopping List</a>
-                            </div>
-                        </div><!-- end row -->
-                        <div class="row">
-                            <div class="col-md-12 bottom-rule top-10"></div>
-                        </div><!-- end row -->
-
-                        <div class="row">
-                            <div class="col-md-12 top-10">
-                                <p>To order by telephone, <a href="tel:18005551212">please call 1-800-555-1212</a></p>
-                            </div>
-                        </div><!-- end row -->
-
-                    </div>
-                </div><!-- end row -->
-
-            </div>
-
-        </div>
-
-        <div class="col-md-6">
-            <div class="col-md-4">
-
-                <img src="~/Content/Images/Mascotas/MiMascota/mascota2.jpg"
-                     alt="Kodak Brownie Flash B Camera"
-                     class="img-responsive" />
-            </div>
-            <div class="col-md-2">
-                @*…[this is the product information]*@
-                <div class="row">
-                    <div class="col-md-12 bottom-rule">
-                        <h2 class="product-price">
-                            $129.00
-                        </h2>
-                        <span class="label label-primary">Vintage</span>
-                        <span class="monospaced">No. 1960140180</span>
-
-                        <div class="row add-to-cart">
-                            <div class="col-md-5 product-qty">
-                                <span class="btn btn-default btn-lg btn-qty">
-                                    <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
-                                </span>
-                                <input class="btn btn-default btn-lg btn-qty" value="1" />
-                                <span class="btn btn-default btn-lg btn-qty">
-                                    <span class="glyphicon glyphicon-minus" aria-hidden="true"></span>
-                                </span>
-                            </div>
-                            <div class="col-md-4">
-                                <button class="btn btn-lg btn-brand btn-full-width">
-                                    Add to Cart
-                                </button>
-                            </div>
-                        </div><!-- end row -->
-
-                        <div class="row">
-                            <div class="col-md-4 text-center">
-                                <span class="monospaced">In Stock</span>
-                            </div>
-                            <div class="col-md-4 col-md-offset-1 text-center">
-                                <a class="monospaced" href="#">Add to Shopping List</a>
-                            </div>
-                        </div><!-- end row -->
-                        <div class="row">
-                            <div class="col-md-12 bottom-rule top-10"></div>
-                        </div><!-- end row -->
-
-                        <div class="row">
-                            <div class="col-md-12 top-10">
-                                <p>To order by telephone, <a href="tel:18005551212">please call 1-800-555-1212</a></p>
-                            </div>
-                        </div><!-- end row -->
-
-                    </div>
-                </div><!-- end row -->
-
-            </div>
-
-        </div>
-    </div><!-- end row -->
-
-
-
-
-
-</div><!-- end container -->
-@*<div class="row">
-        <div id="Catalogo">
-            <div class="col-md-4">
-                <h2>Getting started</h2>
-                <p>
-                    ASP.NET MVC gives you a powerful, patterns-based way to build dynamic websites that
-                    enables a clean separation of concerns and gives you full control over markup
-                    for enjoyable, agile development.
-                </p>
-                <p><a class="btn btn-default" href="http://go.microsoft.com/fwlink/?LinkId=301865">Learn more &raquo;</a></p>
-            </div>
-            <div class="col-md-4">
-                <h2>Get more libraries</h2>
-                <p>NuGet is a free Visual Studio extension that makes it easy to add, remove, and update libraries and tools in Visual Studio projects.</p>
-                <p><a class="btn btn-default" href="http://go.microsoft.com/fwlink/?LinkId=301866">Learn more &raquo;</a></p>
-            </div>
-            <div class="col-md-4">
-                <h2>Web Hosting</h2>
-                <p>You can easily find a web hosting company that offers the right mix of features and price for your applications.</p>
-                <p><a class="btn btn-default" href="http://go.microsoft.com/fwlink/?LinkId=301867">Learn more &raquo;</a></p>
-            </div>
-        </div>
-
-    </div>*@
-

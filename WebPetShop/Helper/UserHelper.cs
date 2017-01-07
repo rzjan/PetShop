@@ -8,9 +8,9 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Configuration;
-using WebPetShop.Models;
+using WebPetShop.ViewModels;
 
-namespace Hotel.Helper
+namespace PetShop.Helper
 {
     public class UsersHelper : IDisposable
     {

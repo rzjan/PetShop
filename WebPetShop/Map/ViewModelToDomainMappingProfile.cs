@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using Model;
 using System;
-using WebPetShop.Models;
+using WebPetShop.ViewModels;
 
 
 namespace WebPetShop.Map
@@ -18,7 +18,10 @@ namespace WebPetShop.Map
         protected override void Configure()
         {
             CreateMap<Mascota, MascotaViewModel>();
-            //CreateMap<TipoCliente, TipoClienteViewModel>();
+            CreateMap<Usuario, UsuarioViewModel>();
+            CreateMap<Estado, EstadoViewModel>();
+            CreateMap<Raza, RazaViewModel>();
+            CreateMap<Animal, AnimalViewModel>();
 
         }
     }

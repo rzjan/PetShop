@@ -1,0 +1,31 @@
+﻿@model Nullable<DateTime>
+
+@{
+    DateTime dt = DateTime.Now;
+    if (Model != null)
+    {
+        dt = (System.DateTime)Model;
+
+    }
+    @Html.TextBox("", String.Format("{0:d}", dt.ToShortDateString()),
+     new { @class = "datefield", type = "string" })
+} 
+
+@*@using WebPetShop.Helper
+@model DateTime
+
+@Html.AddScriptFile("datetimepicker_plugin", "~/Scripts/jquery.datetimepicker.js")
+@Html.AddScript("init_DateTime_Editor"
+    , @"    $(function () {
+        $('.datetimepicker').datetimepicker({
+            lang: 'es',
+            format: 'd/m/Y H:i',
+            formatDate: 'd/m/Y',
+            dayOfWeekStart: 1,
+            mask: true
+        });
+    });")
+
+@Html.TextBox("", (Model == DateTime.MinValue ? null : Model.ToString("dd/MM/yyyy hh:mm"))
+    , new { @class = "datetimepicker" })*@
+

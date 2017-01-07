@@ -1,30 +1,37 @@
-﻿@model IEnumerable<WebPetShop.Models.MascotaViewModel>
+﻿@model IEnumerable<WebPetShop.ViewModels.MascotaViewModel>
 
 @{
     ViewBag.Title = "Index";
+    List<WebPetShop.ViewModels.EstadoViewModel> lstEstado = ViewBag.EstadoList;
+    List<WebPetShop.ViewModels.RazaViewModel> lstRaza = ViewBag.RazaList;
+    
 }
-
-<h2>Index</h2>
-
+<br />
+<hr />
+<div class="row" style="background-color:white">
+    <h2 class="text-center">Mis Mascotas</h2>
+</div>
+<hr />
 <p>
-    @Html.ActionLink("Create New", "Create")
+    @Html.ActionLink("Registrar", "Create", null, new { @class = "btn btn-success" })
 </p>
-<table class="table">
-    <tr>
-        <th>
+<table class="table table-striped">
+    <tr class="success">
+        <th class="active">
             @Html.DisplayNameFor(model => model.Nombre)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Edad)
         </th>
         <th>
             @Html.DisplayNameFor(model => model.FechaNacimiento)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Estado)
+            @Html.DisplayNameFor(model => model.EstadoID)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Foto)
+            @Html.DisplayNameFor(model => model.imagen)
+        </th>
+
+        <th>
+            @Html.DisplayNameFor(model => model.RazaID)
         </th>
         <th>
             @Html.DisplayNameFor(model => model.FechaAlta)
@@ -32,32 +39,50 @@
         <th></th>
     </tr>
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.Nombre)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Edad)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.FechaNacimiento)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Estado)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Foto)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.FechaAlta)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.MascotaID }) |
-            @Html.ActionLink("Details", "Details", new { id=item.MascotaID }) |
-            @*@Html.ActionLink("Delete", "Delete", new { id=item.MascotaID })*@
-        </td>
-    </tr>
-}
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                <strong>
+                    @Html.DisplayFor(modelItem => item.Nombre)
+                </strong>
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.FechaNacimiento)
+            </td>
+            <td>
+
+                @foreach (var i in lstEstado)
+                {
+                    if (i.EstadoID == item.EstadoID)
+                    {
+                        @Html.DisplayFor(modelItem => i.EstadoDescripcion)
+                    }
+                }
+
+            </td>
+            <td>
+                <img src="@Url.Content(@item.Foto)" alt="Image" height="100em" width="150em" />
+
+            </td>
+            <td>
+                @foreach (var _raza in lstRaza)
+                {
+                    if (_raza.RazaID == item.RazaID)
+                    {
+                        @Html.DisplayFor(modelItem => _raza.DescripcionRaza)
+                    }
+                }
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.FechaAlta)
+            </td>
+            <td>
+
+                @Html.ActionLink("Editar", "Edit", new { id = item.MascotaID }, new { @class = "btn btn-primary" })
+                @Html.ActionLink("Ver info", "Details", new { id = item.MascotaID }, new { @class = "btn btn-warning" })
+            </td>
+        </tr>
+    }
 
 </table>

@@ -1,74 +1,129 @@
-﻿@model IEnumerable<WebPetShop.Models.MascotaViewModel>
+﻿@using System.Web.UI.WebControls
+@using WebPetShop.ViewModels
+@using System.Collections
+@model IEnumerable<WebPetShop.ViewModels.MascotaViewModel>
 
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Portal de Mascotas";
+    List<UsuarioViewModel> usuList = ViewBag.UsuarioVM;
+    List<EstadoViewModel> lstEstado = ViewBag.EstadoList;
+    //var list = ViewData["EstadoLista"];
 }
+<br />
+<hr />
+<div class="row" style="background-color:white">
+    <h3 class="text-center">Portal de mascotas para su venta y adopción</h3>
+</div>
 
-<h2>Index</h2>
+<hr />
+@using (Html.BeginForm())
+{
 
-<p>
-    @Html.ActionLink("Create New", "Create")
-</p>
-<table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.Nombre)
-        </th>
-        <th>
-            @*@Html.HiddenFor(m => m.sth, new { Value = "default" })*@
-            @*@Html.Hidden("RequiredProperty", "default")
-                @Html.DisplayNameFor(model => model.Edad, new { Value = "default" })*@
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Estado)
+    <div class="row">
+        <div class="form-group">
 
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.FechaNacimiento)
-        </th>
-        <th>
-            @Html.DisplayName("Dueño")
-            @*@Html.DisplayNameFor(model => model.Usuario.NombreUsuario)*@
-        </th>
-        @*<th>
-                @Html.DisplayNameFor(model => model.Foto)
+            <div class="col-md-10">
+                <h4><strong>Filtrar por:</strong></h4>
+
+                <div class="form-group">                   
+
+                    <a href="@Url.Action("FiltrarDisponibles")" class="btn btn-success">
+                        Disponibles
+                        <i class="glyphicon glyphicon-saved"></i>
+                        <span class="sr-only"></span>
+                        @*<span class="glyphicon glyphicon-saved" aria-hidden="true"></span>*@
+                    </a>
+                    <a href="@Url.Action("FiltrarNoDisponibles")" class="btn btn-danger">
+                        Adoptadas y vendidas
+                        <span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span>
+                    </a>
+
+                </div>
+              
+            </div>
+        </div>
+    </div>  
+
+    <table class="table table-striped table-condensed">
+        <tr class="success">
+            <th class="active">
+                @Html.DisplayNameFor(model => model.Nombre)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Edad)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FechaNacimiento)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.EstadoID)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.imagen)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.UsuarioID)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.FechaAlta)
-            </th>*@
-        <th></th>
-    </tr>
-
-    @foreach (var item in Model)
-    {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Nombre)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Edad)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.FechaNacimiento)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Estado)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Foto)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.FechaAlta)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Usuario.NombreUsuario)
-            </td>
-            <td>
-                @Html.ActionLink("Edit", "Edit", new { id = item.MascotaID }) |
-                @Html.ActionLink("Details", "Details", new { id = item.MascotaID }) |
-                @Html.ActionLink("Delete", "Delete", new { id = item.MascotaID })
-            </td>
+            </th>
+            <th></th>
         </tr>
-    }
 
-</table>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    <strong>
+                        @Html.DisplayFor(modelItem => item.Nombre)
+                    </strong>
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Edad)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.FechaNacimiento)
+                </td>
+                <td>
+                    @foreach (var i in lstEstado)
+                    {
+                        if (i.EstadoID == item.EstadoID)
+                        {
+                            @Html.DisplayFor(modelItem => i.EstadoDescripcion)
+                        }
+                    }                  
+                </td>
+                <td>
+                    <img src="@Url.Content(@item.Foto)" alt="Image" height="100em" width="100em" />
+                </td>
+                <td>
+                    @foreach (var i in usuList)
+                    {
+                        if (i.UsuarioID == item.UsuarioID)
+                        {
+                            @Html.DisplayFor(modelItem => i.ApellidoUsuario)
+                        }
+                    }                 
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.FechaAlta)
+                </td>
+                <td>                   
+                    @if (item.EstadoID == 1)
+                    {
+                        @Html.ActionLink("Adoptar", "Adoptar", new { id = item.MascotaID }, new { @class = "btn btn-primary" })
+                    }
+                    @if (item.EstadoID == 2)
+                    {
+                        @Html.ActionLink("Comprar", "Comprar", new { id = item.MascotaID }, new { @class = "btn btn-success" })
+
+                    }
+                    @Html.ActionLink("Ver Info", "Details", new { id = item.MascotaID }, new { @class = "btn btn-warning" })
+
+                </td>
+            </tr>
+        }
+
+    </table>
+
+}
